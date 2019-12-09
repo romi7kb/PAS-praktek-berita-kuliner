@@ -33,6 +33,17 @@ class Frontend extends Database
                             ");
         return $blog;
     }
+    public function cari($keyword, $awaldata, $jumlahdataperhal){
+	
+        $query ="SELECT  artikel.id,artikel.konten, artikel.judul,artikel.slug,artikel.foto,artikel.tgl_dibuat,kategori.id as id_kategori,kategori.nama as nama_kategori, users.nama as penulis FROM ((artikel JOIN kategori on kategori.id = artikel.id_kategori) JOIN users on users.id = artikel.id_user)
+        WHERE artikel.judul LIKE '%$keyword%' OR 
+        artikel.tgl_dibuat LIKE '%$keyword%' OR 
+        kategori.nama LIKE '%$keyword%' OR 
+        users.nama LIKE '%$keyword%' LIMIT $awaldata, $jumlahdataperhal
+    
+        ";
+        return $this->query($query);
+    }
 }
 
 ?>

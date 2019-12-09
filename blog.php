@@ -2,9 +2,45 @@
 <html lang="zxx">
 
 <?php 
+session_start();
 include 'assets/view/blog-head.php';
 include "App/koneksi.php";
 $blog = new Frontend();
+$jumlahdataperhal=9;
+                if (isset($_GET["pages"])) {
+                    $halaktiv = $_GET["pages"];
+                }else {
+                    $halaktiv = 1;
+                }
+                $awaldata= ($jumlahdataperhal * $halaktiv)-$jumlahdataperhal;
+                if (isset($_GET["close"])) {
+                    $_SESSION["keyword"]=false;
+                }
+                if (isset($_POST["cari"])) {
+                    $_SESSION["keyword"]=$_POST["keyword"];
+                    $keyword=$_POST["keyword"];	
+                    $artikel = $blog->cari($_POST["keyword"], $awaldata, $jumlahdataperhal);
+                    $jd=count($blog->query("SELECT  artikel.id,artikel.konten, artikel.judul,artikel.slug,artikel.foto,artikel.tgl_dibuat,kategori.id as id_kategori,kategori.nama as nama_kategori, users.nama as penulis FROM ((artikel JOIN kategori on kategori.id = artikel.id_kategori) JOIN users on users.id = artikel.id_user)
+                    WHERE artikel.judul LIKE '%$keyword%' OR 
+                    artikel.tgl_dibuat LIKE '%$keyword%' OR 
+                    kategori.nama LIKE '%$keyword%' OR 
+                    users.nama LIKE '%$keyword%' LIMIT $awaldata, $jumlahdataperhal
+                    "));
+                } 
+                elseif (isset($_SESSION["keyword"])) {
+                    $keyword=$_SESSION["keyword"];
+                    $artikel = $blog->cari($_SESSION["keyword"], $awaldata, $jumlahdataperhal);
+                    $jd=count($blog->query("SELECT  artikel.id,artikel.konten, artikel.judul,artikel.slug,artikel.foto,artikel.tgl_dibuat,kategori.id as id_kategori,kategori.nama as nama_kategori, users.nama as penulis FROM ((artikel JOIN kategori on kategori.id = artikel.id_kategori) JOIN users on users.id = artikel.id_user)
+                    WHERE artikel.judul LIKE '%$keyword%' OR 
+                    artikel.tgl_dibuat LIKE '%$keyword%' OR 
+                    kategori.nama LIKE '%$keyword%' OR 
+                    users.nama LIKE '%$keyword%' LIMIT $awaldata, $jumlahdataperhal
+                    "));
+                }else {
+                    $jd=count($blog->query("SELECT * FROM artikel"));
+                    $artikel = $blog->index("desc LIMIT $awaldata, $jumlahdataperhal");
+                }
+                $jumlahhal = ceil($jd / $jumlahdataperhal);
 ?>
 
 <body>
@@ -17,7 +53,7 @@ $blog = new Frontend();
     <header class="header-section-other">
         <div class="container-fluid">
             <div class="logo">
-                <a href="./index.html"><img src="assets/template/yummy/img/little-logo.png" alt=""></a>
+                <a href="./index.php"><img src="assets/template/yummy/img/little-logo.png" alt=""></a>
             </div>
             <div class="nav-menu">
                 <nav class="main-menu mobile-menu">
@@ -25,13 +61,27 @@ $blog = new Frontend();
                         <li><a href="/">Home</a></li>
                         <li><a href="categories.php">Categories</a></li>
                         <li class="active"><a href="#">Blog</a></li>
-                        <li><a href="about.html">About</a></li>
+                        <li><a href="about.php">About</a></li>
 
                     </ul>
                 </nav>
+                <?php 
+                if ($_SESSION['keyword']==true) {
+                    ?>
+                <div class="nav-right">
+                    <div class="logo">
+                        <a href="?close=true"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <?php
+                }else {
+                    ?>
                 <div class="nav-right search-switch">
                     <i class="fa fa-search"></i>
                 </div>
+                <?php
+                }?>
+
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
@@ -42,16 +92,7 @@ $blog = new Frontend();
         <div class="container">
             <div class="row">
                 <?php 
-                $jumlahdataperhal=9;
-                if (isset($_GET["pages"])) {
-                    $halaktiv = $_GET["pages"];
-                }else {
-                    $halaktiv = 1;
-                }
-                $awaldata= ($jumlahdataperhal * $halaktiv)-$jumlahdataperhal;
-                $jd=count($blog->query("SELECT * FROM artikel"));
-                $artikel = $blog->index("desc LIMIT $awaldata, $jumlahdataperhal");
-                $jumlahhal = ceil($jd / $jumlahdataperhal);
+                
                 foreach ($artikel as $data) 
                 {
                 ?>
@@ -101,19 +142,11 @@ $blog = new Frontend();
 
 
     <?php 
-include 'assets/view/blog-footer.php'
+include 'assets/view/blog-footer.php';
+include 'assets/view/blog-search.php';
 ?>
 
-    <!-- Search model -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search model end -->
+
 
     <?php 
 include 'assets/view/blog-js.php'

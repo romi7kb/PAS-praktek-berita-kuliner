@@ -23,7 +23,7 @@ $blog = new Frontend();
                 <nav class="main-menu mobile-menu">
                     <ul>
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="">Categories</a></li>
+                        <li><a href="categories.php">Categories</a></li>
                         <li><a href="blog.php">Blog</a></li>
                         <li><a href="about.php">About</a></li>
 
@@ -112,84 +112,73 @@ $blog = new Frontend();
     <!-- Page Top Recipe Section End -->
 
     <!-- Top Recipe Section Begin -->
-
-    <div class="section-title">
-        <h5>Terbaru</h5>
-    </div>
-    <div class="container po-relative">
-        <div class="plus-icon">
-            <i class="fa fa-plus"></i>
+    <section class="top-recipe spad">
+        <div class="section-title">
+            <h5>Terbaru</h5>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="top-recipe-item large-item">
-                    <a href="detail-blog.php?id=<?=$datata[0]['id']?>">
-                        <div class="top-recipe-img set-bg" data-setbg="/admin/artikel/img/<?=$datata[0]['foto']?>">
-                            <i class="fa fa-plus"></i>
+        <div class="container po-relative">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="top-recipe-item large-item">
+                        <a href="detail-blog.php?id=<?=$datata[0]['id']?>">
+                            <div class="top-recipe-img set-bg" data-setbg="/admin/artikel/img/<?=$datata[0]['foto']?>">
+                                <i class="fa fa-plus"></i>
+                            </div>
+                        </a>
+                        <div class="top-recipe-text">
+                            <a href=" categories.php?id=<?=$datata[0]['nama_kategori']?>">
+                                <div class="cat-name"><?=$datata[0]['nama_kategori']?></div>
+                            </a>
+                            <a href="detail-blog.php?id=<?=$datata[0]['id']?>">
+                                <h4><?=$datata[0]['judul']?></h4>
+                            </a>
+                            <p><?php echo substr($datata[0]['konten'],0,150)?>...</p>
                         </div>
-                    </a>
-                    <div class="top-recipe-text">
-                        <a href=" categories.php?id=<?=$datata[0]['nama_kategori']?>">
-                            <div class="cat-name"><?=$datata[0]['nama_kategori']?></div>
-                        </a>
-                        <a href="detail-blog?id=<?=$datata[0]['id']?>">
-                            <h4><?=$datata[0]['judul']?></h4>
-                        </a>
-                        <p><?php echo substr($datata[0]['konten'],0,150)?>...</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <?php for ($i=1; $i<5 ; $i++) { 
+                <div class="col-lg-6">
+                    <?php for ($i=1; $i<5 ; $i++) { 
                         ?>
 
-                <div class="top-recipe-item">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <a href="detail-blog.php?id=<?=$datata[$i]['id']?>">
-                                <div class="top-recipe-img set-bg"
-                                    data-setbg="/admin/artikel/img/<?=$datata[$i]['foto']?>">
-                                    <i class="fa fa-plus"></i>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="top-recipe-text">
-                                <a href=" categories.php?id=<?=$datata[$i]['nama_kategori']?>">
-                                    <div class="cat-name"><?=$datata[$i]['nama_kategori']?></div>
-                                </a>
+                    <div class="top-recipe-item">
+                        <div class="row">
+                            <div class="col-sm-4">
                                 <a href="detail-blog.php?id=<?=$datata[$i]['id']?>">
-                                    <h4><?=$datata[$i]['judul']?></h4>
+                                    <div class="top-recipe-img set-bg"
+                                        data-setbg="/admin/artikel/img/<?=$datata[$i]['foto']?>">
+                                        <i class="fa fa-plus"></i>
+                                    </div>
                                 </a>
-                                <p><?= substr($datata[$i]['konten'],0,150)?>...</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="top-recipe-text">
+                                    <a href=" categories.php?id=<?=$datata[$i]['nama_kategori']?>">
+                                        <div class="cat-name"><?=$datata[$i]['nama_kategori']?></div>
+                                    </a>
+                                    <a href="detail-blog.php?id=<?=$datata[$i]['id']?>">
+                                        <h4><?=$datata[$i]['judul']?></h4>
+                                    </a>
+                                    <p><?= substr($datata[$i]['konten'],0,150)?>...</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-                <?php
+                    </div>
+                    <?php
                     } ?>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+    <!-- Top Recipe Section End -->
 
 
     <?php 
-include 'assets/view/blog-footer.php'
+include 'assets/view/blog-footer.php';
+include 'assets/view/blog-search.php';
+
 ?>
-
-
-
-    <!-- Search model -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search model end -->
 
     <?php 
 include 'assets/view/blog-js.php'

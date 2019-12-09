@@ -73,7 +73,7 @@ $blog = new Frontend();
                     </div>
                     <div class="cf-item-text">
                         <a href="detail-blog.php?id=<?=$data['id']?>">
-                            <h5><?=$data['judul']?></h5>
+                            <h5><?= substr($data['judul'],0,20)?></h5>
                         </a>
                     </div>
                 </div>
@@ -89,19 +89,10 @@ $blog = new Frontend();
 
 
     <?php 
-include 'assets/view/blog-footer.php'
+include 'assets/view/blog-footer.php';
+include 'assets/view/blog-search.php';
 ?>
 
-    <!-- Search model -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search model end -->
 
     <?php 
 include 'assets/view/blog-js.php'
